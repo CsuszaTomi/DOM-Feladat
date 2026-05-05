@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Játék választó</h1>
+    <button onclick="Dobas()">Dobas</button>
+    <!--Majd később kocka dobás képek-->
+    <div id="eredmeny"></div>
+    <script>
+        function Dobas() {
+            let kocka1 = Number(Math.floor(Math.random() * 6) + 1);
+            let kocka2 = Number(Math.floor(Math.random() * 6) + 1);
+            if (kocka1 > kocka2) {
+                document.getElementById("eredmeny").innerHTML = "Az első játékos nyert! Kocka 1: " + kocka1 + ", Kocka 2: " + kocka2;
+            } else if (kocka2 > kocka1) {
+                document.getElementById("eredmeny").innerHTML = "A második játékos nyert! Kocka 1: " + kocka1 + ", Kocka 2: " + kocka2;
+            } else {
+                document.getElementById("eredmeny").innerHTML = "Döntetlen! Kocka 1: " + kocka1 + ", Kocka 2: " + kocka2;
+            }
+        }
+    </script>
+</body>
+</html>

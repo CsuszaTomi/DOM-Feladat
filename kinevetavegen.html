@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box {
+            width: 200px;
+            height: 200px;
+            margin: 10px;
+            float: left;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 28px;
+            font-family: sans-serif;
+            border-radius: 6px;
+            flex-direction: column;
+        }
+        #box1 { background: green; }
+    </style>
+</head>
+<body>
+    <div class="box" id="box1">Nyomd le ha zöld!</div>
+
+    <script>
+        let siker = false
+        let box1 = document.getElementById("box1")
+        box1.addEventListener("click",Box1click)
+        function Box1click(e){
+            let currentColor = window.getComputedStyle(box1).backgroundColor;     
+            if(currentColor == "rgb(0, 128, 0)"){
+                alert("nyertél")
+            }
+        }
+
+        function GetRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min) + min);
+        }
+
+        function Szinvaltas() {
+            if (Math.random() < 0.2) {
+                box1.style.backgroundColor = "rgb(0, 128, 0)";
+                box1.innerHTML = "Most!"
+            } else {
+                box1.style.backgroundColor = `rgb(${GetRandomInt(0, 256)},${GetRandomInt(0, 256)},${GetRandomInt(0, 256)})`;
+                box1.innerHTML = "Nyomd le ha zöld!"
+            }
+        }
+
+
+        setInterval(Szinvaltas, 2000);
+    </script>
+</body>
+</html>
