@@ -3,35 +3,196 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Ki nevet a végén</title>
     <style>
-        .box {
-            width: 200px;
-            height: 200px;
-            margin: 10px;
-            float: left;
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-image: url("img/bg.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        .overlay {
+            background-color: rgba(0,0,0,0.4);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 28px;
+            padding: 20px;
+        }
+
+        .game-box {
+            background-color: rgba(255,255,255,0.9);
+            border: 3px solid black;
+            padding: 30px;
+            width: 500px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 0;
+            border-bottom: 3px solid black;
+            padding-bottom: 10px;
+            color: black;
+        }
+
+        h2 {
+            color: black;
+            font-size: 18px;
+            margin-top: 20px;
+            border-bottom: 2px solid black;
+            padding-bottom: 10px;
+        }
+
+        .box {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
             font-family: sans-serif;
             border-radius: 6px;
-            flex-direction: column;
+            border: 3px solid black;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            color: white;
+            font-weight: bold;
         }
-        #box1 { background: green; }
+
+        #box1 { 
+            background: green;
+        }
+
+        #eredmeny {
+            margin-top: 20px;
+            padding: 10px;
+            border: 2px solid black;
+            background-color: #eee;
+            color: black;
+            font-weight: bold;
+            min-height: 30px;
+        }
+
+        #ido {
+            margin-top: 10px;
+            padding: 10px;
+            border: 2px solid #f1c40f;
+            background-color: #fffacd;
+            color: black;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 15px;
+            border-collapse: collapse;
+            background-color: white;
+        }
+
+        table th, table td {
+            border: 2px solid black;
+            padding: 8px;
+            color: black;
+        }
+
+        table th {
+            background-color: #f1c40f;
+            font-weight: bold;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .toplista-container {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            border: 3px solid black;
+            background-color: #f1c40f;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #e8b708;
+        }
     </style>
 </head>
 <body>
-    <div class="box" id="box1">Nyomd le ha zöld!</div>
+    <div class="overlay">
+        <div class="game-box">
+            <h1>Ki nevet a végén</h1>
+            <div class="box" id="box1">Nyomd le ha zöld!</div>
+            <div id="eredmeny">Kattints a zöld négyzetre!</div>
+            <div class="toplista-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Helyezés</th>
+                            <th>Idő (ms)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="toplistaTabla">
+                        <tr>
+                            <td colspan="2" style="text-align: center; color: #999;">Még nincs eredmény</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
     <script>
-        let siker = false
-        let box1 = document.getElementById("box1")
-        box1.addEventListener("click",Box1click)
+        let box1 = document.getElementById("box1");
+        let eredmeny = document.getElementById("eredmeny");
+        let idoDiv = document.getElementById("ido");
+        let toplistaTabla = document.getElementById("toplistaTabla");       
+        let zoldSzinIdeje = null;
+        let toplista = [];
+        const toplistaMaxHossz = 10;
+        box1.addEventListener("click", Box1click);
+
+        function ToplitaMegjelenites() {
+            if (toplista.length === 0) {
+                toplistaTabla.innerHTML = '<tr><td colspan="2" style="text-align: center; color: #999;">Még nincs eredmény</td></tr>';
+                return;
+            }
+            toplistaTabla.innerHTML = '';
+            toplista.forEach((ido, index) => {
+                const sor = document.createElement("tr");
+                sor.innerHTML = `<td>${index + 1}.</td><td>${ido} ms</td>`;
+                toplistaTabla.appendChild(sor);
+            });
+        }
+
+        function UjIdoHozzaadasa(ido) {
+            toplista.push(ido);
+            toplista.sort((a, b) => a - b);        
+            if (toplista.length > toplistaMaxHossz) {
+                toplista = toplista.slice(0, toplistaMaxHossz);
+            }
+            ToplitaMegjelenites();
+        }
+        
         function Box1click(e){
             let currentColor = window.getComputedStyle(box1).backgroundColor;     
-            if(currentColor == "rgb(0, 128, 0)"){
-                alert("nyertél")
+            if(currentColor == "rgb(0, 128, 0)" && zoldSzinIdeje !== null){
+                let elteltIdo = Date.now() - zoldSzinIdeje;              
+                UjIdoHozzaadasa(elteltIdo);
+                eredmeny.innerHTML = `Gratulálok! Elért idő: ${elteltIdo} ms`;     
+                eredmeny.style.backgroundColor = "#d4edda";         
+                zoldSzinIdeje = null;
             }
         }
 
@@ -41,14 +202,17 @@
 
         function Szinvaltas() {
             if (Math.random() < 0.2) {
+                zoldSzinIdeje = Date.now();
                 box1.style.backgroundColor = "rgb(0, 128, 0)";
-                box1.innerHTML = "Most!"
+                box1.innerHTML = "Most!";
+                eredmeny.innerHTML = "Kattints a zöld négyzetre!";
+                eredmeny.style.backgroundColor = "#eee";
             } else {
                 box1.style.backgroundColor = `rgb(${GetRandomInt(0, 256)},${GetRandomInt(0, 256)},${GetRandomInt(0, 256)})`;
-                box1.innerHTML = "Nyomd le ha zöld!"
+                box1.innerHTML = "Nyomd le ha zöld!";
+                zoldSzinIdeje = null;
             }
         }
-
 
         setInterval(Szinvaltas, 2000);
     </script>
