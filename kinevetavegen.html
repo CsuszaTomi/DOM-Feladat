@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ki nevet a végén</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
             background-image: url("img/bg.jpg");
             background-size: cover;
             background-repeat: no-repeat;
@@ -17,31 +17,22 @@
         .overlay {
             background-color: rgba(0,0,0,0.4);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
         }
 
         .game-box {
             background-color: rgba(255,255,255,0.9);
             border: 3px solid black;
-            padding: 30px;
-            width: 500px;
-            text-align: center;
         }
 
-        h1 {
-            margin-top: 0;
+        .game-box h1 {
             border-bottom: 3px solid black;
             padding-bottom: 10px;
             color: black;
         }
 
-        h2 {
+        .game-box h2 {
             color: black;
             font-size: 18px;
-            margin-top: 20px;
             border-bottom: 2px solid black;
             padding-bottom: 10px;
         }
@@ -49,12 +40,10 @@
         .box {
             width: 200px;
             height: 200px;
-            margin: 20px auto;
             display: flex;
             justify-content: center;
             align-items: center;
             font-size: 24px;
-            font-family: sans-serif;
             border-radius: 6px;
             border: 3px solid black;
             cursor: pointer;
@@ -63,13 +52,11 @@
             font-weight: bold;
         }
 
-        #box1 { 
+        #box1 {
             background: green;
         }
 
         #eredmeny {
-            margin-top: 20px;
-            padding: 10px;
             border: 2px solid black;
             background-color: #eee;
             color: black;
@@ -77,75 +64,67 @@
             min-height: 30px;
         }
 
-        #ido {
-            margin-top: 10px;
-            padding: 10px;
-            border: 2px solid #f1c40f;
-            background-color: #fffacd;
-            color: black;
-            font-weight: bold;
-            font-size: 18px;
-        }
-
-        table {
-            width: 100%;
-            margin-top: 15px;
-            border-collapse: collapse;
-            background-color: white;
-        }
-
-        table th, table td {
-            border: 2px solid black;
-            padding: 8px;
-            color: black;
-        }
-
-        table th {
-            background-color: #f1c40f;
-            font-weight: bold;
-        }
-
-        table tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
         .toplista-container {
             max-height: 200px;
             overflow-y: auto;
-            margin-top: 10px;
         }
 
-        button {
-            margin-top: 15px;
-            padding: 10px 20px;
-            border: 3px solid black;
-            background-color: #f1c40f;
-            cursor: pointer;
+        table th, table td {
+            border: 2px solid black !important;
+            color: black;
+        }
+
+        .navbar-custom {
+            background-color: rgba(0,0,0,0.85);
+            border-bottom: 3px solid black;
+        }
+ 
+        .nav-link {
+            color: #ccc !important;
             font-weight: bold;
         }
 
-        button:hover {
-            background-color: #e8b708;
+        .nav-link:hover, .nav-link.active {
+            color: #f1c40f !important;
         }
+
     </style>
 </head>
 <body>
-    <div class="overlay">
-        <div class="game-box">
-            <h1>Ki nevet a végén</h1>
-            <div class="box" id="box1">Nyomd le ha zöld!</div>
-            <div id="eredmeny">Kattints a zöld négyzetre!</div>
-            <div class="toplista-container">
-                <table>
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Fő oldal</a></li>
+                    <li class="nav-item"><a class="nav-link" href="kocka.html">Kocka játék</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="kinevetavegen.html">Ki nevet a végén</a></li>
+                    <li class="nav-item"><a class="nav-link" href="whackamole.html">Whack a mole</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="overlay d-flex justify-content-center align-items-center p-3">
+        <div class="game-box p-4 text-center" style="width: 500px;">
+            <h1 class="mt-0">Ki nevet a végén</h1>
+            <div class="d-flex justify-content-center mt-3">
+                <div class="box" id="box1">Nyomd le ha zöld!</div>
+            </div>
+            <div id="eredmeny" class="mt-3 p-2">Kattints a zöld négyzetre!</div>
+            <div class="toplista-container mt-3">
+                <table class="table table-bordered mb-0">
                     <thead>
                         <tr>
-                            <th>Helyezés</th>
-                            <th>Idő (ms)</th>
+                            <th class="bg-warning">Helyezés</th>
+                            <th class="bg-warning">Idő (ms)</th>
                         </tr>
                     </thead>
                     <tbody id="toplistaTabla">
                         <tr>
-                            <td colspan="2" style="text-align: center; color: #999;">Még nincs eredmény</td>
+                            <td colspan="2" class="text-center text-muted">Még nincs eredmény</td>
                         </tr>
                     </tbody>
                 </table>
@@ -153,11 +132,11 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         let box1 = document.getElementById("box1");
         let eredmeny = document.getElementById("eredmeny");
-        let idoDiv = document.getElementById("ido");
-        let toplistaTabla = document.getElementById("toplistaTabla");       
+        let toplistaTabla = document.getElementById("toplistaTabla");
         let zoldSzinIdeje = null;
         let toplista = [];
         const toplistaMaxHossz = 10;
@@ -165,7 +144,7 @@
 
         function ToplitaMegjelenites() {
             if (toplista.length === 0) {
-                toplistaTabla.innerHTML = '<tr><td colspan="2" style="text-align: center; color: #999;">Még nincs eredmény</td></tr>';
+                toplistaTabla.innerHTML = '<tr><td colspan="2" class="text-center text-muted">Még nincs eredmény</td></tr>';
                 return;
             }
             toplistaTabla.innerHTML = '';
@@ -178,20 +157,20 @@
 
         function UjIdoHozzaadasa(ido) {
             toplista.push(ido);
-            toplista.sort((a, b) => a - b);        
+            toplista.sort((a, b) => a - b);
             if (toplista.length > toplistaMaxHossz) {
                 toplista = toplista.slice(0, toplistaMaxHossz);
             }
             ToplitaMegjelenites();
         }
-        
-        function Box1click(e){
-            let currentColor = window.getComputedStyle(box1).backgroundColor;     
-            if(currentColor == "rgb(0, 128, 0)" && zoldSzinIdeje !== null){
-                let elteltIdo = Date.now() - zoldSzinIdeje;              
+
+        function Box1click(e) {
+            let currentColor = window.getComputedStyle(box1).backgroundColor;
+            if (currentColor == "rgb(0, 128, 0)" && zoldSzinIdeje !== null) {
+                let elteltIdo = Date.now() - zoldSzinIdeje;
                 UjIdoHozzaadasa(elteltIdo);
-                eredmeny.innerHTML = `Gratulálok! Elért idő: ${elteltIdo} ms`;     
-                eredmeny.style.backgroundColor = "#d4edda";         
+                eredmeny.innerHTML = `Gratulálok! Elért idő: ${elteltIdo} ms`;
+                eredmeny.style.backgroundColor = "#d4edda";
                 zoldSzinIdeje = null;
             }
         }
