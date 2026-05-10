@@ -24,13 +24,13 @@
             border: 3px solid black;
         }
 
-        .game-box h1 {
+        h1 {
             border-bottom: 3px solid black;
             padding-bottom: 10px;
             color: black;
         }
 
-        .game-box h2 {
+        h2 {
             color: black;
             font-size: 18px;
             border-bottom: 2px solid black;
@@ -124,7 +124,7 @@
                     </thead>
                     <tbody id="toplistaTabla">
                         <tr>
-                            <td colspan="2" class="text-center text-muted">Még nincs eredmény</td>
+                            <td colspan="2" class="text-center">Még nincs eredmény</td>
                         </tr>
                     </tbody>
                 </table>
@@ -142,11 +142,7 @@
         const toplistaMaxHossz = 10;
         box1.addEventListener("click", Box1click);
 
-        function ToplitaMegjelenites() {
-            if (toplista.length === 0) {
-                toplistaTabla.innerHTML = '<tr><td colspan="2" class="text-center text-muted">Még nincs eredmény</td></tr>';
-                return;
-            }
+        function ToplistaFrissites() {
             toplistaTabla.innerHTML = '';
             toplista.forEach((ido, index) => {
                 const sor = document.createElement("tr");
@@ -161,7 +157,7 @@
             if (toplista.length > toplistaMaxHossz) {
                 toplista = toplista.slice(0, toplistaMaxHossz);
             }
-            ToplitaMegjelenites();
+            ToplistaFrissites();
         }
 
         function Box1click(e) {
@@ -193,7 +189,7 @@
             }
         }
 
-        setInterval(Szinvaltas, 2000);
+        setInterval(Szinvaltas, 1500);
     </script>
 </body>
 </html>
