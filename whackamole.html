@@ -75,6 +75,19 @@
             z-index: 2;
             display: none;             
         }
+
+        .gomb {
+            background-color: rgb(107, 97, 97);
+            color: white;
+            font-weight: bold;
+            border: black 2px solid;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+
+        .gomb:hover {
+            background-color: rgb(107, 207, 24);
+        }
     </style>
 </head>
 <body>
@@ -97,7 +110,16 @@
     <div class="overlay d-flex justify-content-center align-items-center p-3">
         <div class="game-box p-4 text-center" style="width: 500px;">
             <h1 class="mt-0">Csapd le a vakondot</h1>
-            <table>
+            <div id="idozito-form" class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                <label id="idozitotext" for="idozito" class="mb-0 text-nowrap">Időzítő (mp):</label>
+                <input type="text" name="idozito" id="idozito" class="form-control" style="width: 80px;">
+                <button class="btn gomb" onclick="startGame()">Játék indítása</button>
+            </div>
+            <div id="infopanel" class="d-flex justify-content-center gap-4 mt-3" >
+                <h2 id="ido" hidden class="m-0">Idő: 0</h2>
+                <h2 id="pontszam" hidden class="m-0">Pontszám: 0</h2>
+            </div>
+            <table class="mx-auto mt-4" hidden>
                 <tr>
                     <td>
                         <div class="lyuk-container" id="l1">
@@ -159,7 +181,7 @@
                     </td>
                 </tr>
             </table>
-            <h2 id="pontszam">Pontszám: 0</h2>
+            <div id="EndGame"></div>
         </div>
     </div>
 
@@ -171,6 +193,13 @@
         let specialisVakond = false;
         let pontszam = document.getElementById("pontszam");
         const lyukak = document.querySelectorAll(".lyuk-container");
+        let idozitoInput = document.getElementById("idozito");
+        let idozito = 0;
+        let idoKijelzo = document.getElementById("ido");
+        let vegtelenMod = false;
+        idozitoInput.addEventListener("change", () => {
+            idozito = parseInt(idozitoInput.value);
+        });
         lyukak.forEach(lyuk => {
             lyuk.addEventListener("click", () => {
                 if(lyuk === vakondlyuk && vanVakond) 
@@ -188,6 +217,31 @@
             });
         });
 
+        function startGame() {
+            score = 0;
+            vanVakond = false;
+            vakondlyuk = null;
+            vegtelenMod = false;
+            idozito = parseInt(idozitoInput.value) || 0;
+            pontszam.textContent = `Pontszám: ${score}`;
+            pontszam.hidden = false;
+            document.querySelector("#idozitotext").hidden = true;
+            document.querySelector("#idozito-form").hidden = true;
+            document.querySelector("#idozito").hidden = true;
+            document.querySelector("button.gomb").hidden = true;
+            document.querySelector("table").hidden = false;
+            idoKijelzo.hidden = false;
+            idoKijelzo.textContent = `Idő: ${idozito}`;
+            setTimeout(vakondMegjelenitese, 2000);
+            if(idozito > 0) {
+                setTimeout(idoSzamlalo, 1000);
+            }
+            else{
+                vegtelenMod = true;
+                idoKijelzo.textContent = "Végtelen mód";
+            }
+        }
+
         function randomLyuk() {
             const index = Math.floor(Math.random() * lyukak.length);
             return lyukak[index];
@@ -199,15 +253,18 @@
 
         function GetDifficultyGameSpeed() {
             if(score < 15) return 1500;
-            if(score < 30) return 1200;
-            if(score < 45) return 900;
-            if(score < 60) return 700;
-            if(score < 75) return 500;
-            if(score < 90) return 400;
-            return 300;
+            if(score < 30) return 1400;
+            if(score < 45) return 1300;
+            if(score < 60) return 1200;
+            if(score < 75) return 1100;
+            if(score < 90) return 1000;
+            return 900;
         }
         
         function vakondMegjelenitese() {
+            if(idozito <= 0 && !vegtelenMod) {
+                return;
+            }
             if(vanVakond) 
             {
                 return;
@@ -229,7 +286,35 @@
             }, 1000);
             setTimeout(vakondMegjelenitese, GetDifficultyGameSpeed());
         }
-        setInterval(vakondMegjelenitese, GetDifficultyGameSpeed());
+
+        function idoSzamlalo() {
+            if(idozito > 0) {
+                idozito--;
+                idoKijelzo.textContent = `Idő: ${idozito}`;
+                setTimeout(idoSzamlalo, 1000);
+            } else {
+                idoKijelzo.textContent = "Idő lejárt!";
+                document.querySelector("table").hidden = true;
+                pontszam.hidden = true;
+                document.getElementById("EndGame").innerHTML = `
+                    <h2>Játék vége! Elért pontszám: ${score}</h2>
+                    <button class="btn gomb mt-2" onclick="resetGame()">Újra</button>
+                `;
+            }
+        }
+
+        function resetGame() {
+            document.getElementById("EndGame").innerHTML = "";
+            idoKijelzo.hidden = true;
+            idoKijelzo.textContent = "Idő: 0";
+            pontszam.hidden = true;
+            idozitoInput.value = "";
+            idozito = 0;
+            document.querySelector("#idozito-form").hidden = false;
+            document.querySelector("#idozitotext").hidden = false;
+            document.querySelector("#idozito").hidden = false;
+            document.querySelector("button.gomb").hidden = false;
+        }
     </script>
 </body>
 </html>

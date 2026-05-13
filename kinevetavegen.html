@@ -53,7 +53,7 @@
         }
 
         #box1 {
-            background: green;
+            background: red;
         }
 
         #eredmeny {
@@ -138,6 +138,7 @@
         let eredmeny = document.getElementById("eredmeny");
         let toplistaTabla = document.getElementById("toplistaTabla");
         let zoldSzinIdeje = null;
+        let zolde = false;
         let toplista = [];
         const toplistaMaxHossz = 10;
         box1.addEventListener("click", Box1click);
@@ -162,12 +163,18 @@
 
         function Box1click(e) {
             let currentColor = window.getComputedStyle(box1).backgroundColor;
-            if (currentColor == "rgb(0, 128, 0)" && zoldSzinIdeje !== null) {
+            if (zolde && zoldSzinIdeje !== null) {
                 let elteltIdo = Date.now() - zoldSzinIdeje;
                 UjIdoHozzaadasa(elteltIdo);
                 eredmeny.innerHTML = `Gratulálok! Elért idő: ${elteltIdo} ms`;
                 eredmeny.style.backgroundColor = "#d4edda";
                 zoldSzinIdeje = null;
+                zolde = false;
+            }
+            else {
+                eredmeny.innerHTML = "Túl korán! Várj a zöldre!";
+                eredmeny.style.backgroundColor = "#f8d7da";
+                zolde = false;
             }
         }
 
@@ -175,9 +182,14 @@
             return Math.floor(Math.random() * (max - min) + min);
         }
 
+        function GetRandomTime() {
+            return GetRandomInt(1000, 2500);
+        }
+
         function Szinvaltas() {
             if (Math.random() < 0.2) {
                 zoldSzinIdeje = Date.now();
+                zolde = true;
                 box1.style.backgroundColor = "rgb(0, 128, 0)";
                 box1.innerHTML = "Most!";
                 eredmeny.innerHTML = "Kattints a zöld négyzetre!";
@@ -186,10 +198,11 @@
                 box1.style.backgroundColor = `rgb(${GetRandomInt(0, 256)},${GetRandomInt(0, 256)},${GetRandomInt(0, 256)})`;
                 box1.innerHTML = "Nyomd le ha zöld!";
                 zoldSzinIdeje = null;
+                zolde = false;
             }
+            setTimeout(Szinvaltas, GetRandomTime());
         }
-
-        setInterval(Szinvaltas, 1500);
+        setTimeout(Szinvaltas, 2000);
     </script>
 </body>
 </html>
